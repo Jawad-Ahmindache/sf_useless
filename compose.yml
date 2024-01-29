@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  php:
+    build: .
+    container_name: php
+    ports:
+      - "8000:8000"
+    volumes:
+        - .:/var/www:rw
+    command: ["symfony","server:start"]
+
+  database:
+    image: mariadb:10.6.15
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-!ChangeMe!}
+      MYSQL_USER: ${MYSQL_USER:-app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ChangeMe}
+    volumes:
+      - db_data:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:
